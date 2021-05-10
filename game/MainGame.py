@@ -10,6 +10,7 @@ from game.Constants import w, h, NUM_PIPES, HORIZONTAL_SPACE
 from game.Input import get
 from game.NumberDrawer import NumberDrawer
 from game.Pipe import Pipe
+from game.SoundPlayer import SoundPlayer
 
 
 class MainGame:
@@ -33,6 +34,7 @@ class MainGame:
         self.number = NumberDrawer()
         self.key = {"ENTER": False, "UP": False, "SPACE": False}
         self.initialize_pipe()
+        self.sound_player = SoundPlayer()
 
     def initialize_pipe(self):
         self.pipes.clear()
@@ -52,6 +54,7 @@ class MainGame:
         self.point = 0
         self.bird = Bird(self)
         self.white_screen = False
+        self.sound_player.swoosh_sound.play_sound()
 
     def paint(self):
         self.background.render()
@@ -93,10 +96,11 @@ class MainGame:
                 self.bird.keep_flapping = False
             elif self.game_status == 1:
                 if self.bird.y > -self.bird.get_height():
+                    self.sound_player.wing_sound.play_sound()
                     self.bird.angle = -math.pi / 8
                     self.bird.speed = -6
                     self.bird.y += self.bird.speed
-            elif self.game_status == 2:
+            elif self.game_status == 2 and self.key["ENTER"]:
                 self.reset_game()
         self.key = {"ENTER": False, "UP": False, "SPACE": False}
 
@@ -107,6 +111,7 @@ class MainGame:
 
                 if pipe.speed_x > check > 0:
                     self.point += 1
+                    self.sound_player.point_sound.play_sound()
 
     def update_pipes(self):
         if len(self.pipes) > 0:
@@ -131,6 +136,8 @@ class MainGame:
 
                     if self.bird.y + self.bird.get_height() / 2 - 9 >= pipe.y + pipe.space:
                         self.bird.y = -self.bird.get_height() / 2 + pipe.y + pipe.space
+
+                self.sound_player.hit_sound.play_sound()
                 self.game_status = 2
                 self.bird.speed = 8
 

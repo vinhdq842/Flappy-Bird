@@ -58,6 +58,8 @@ class Bird:
                 if self.angle > math.pi / 2:
                     self.angle = math.pi / 2
         else:
+            if self.main_game.game_status != 2:
+                self.main_game.sound_player.hit_sound.play_sound()
             self.main_game.game_status = 2
 
         if self.speed <= 0:
