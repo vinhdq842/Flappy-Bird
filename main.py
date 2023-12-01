@@ -1,21 +1,19 @@
 import pygame
 
-from game.Constants import w, h
+from game.Constants import h, w
+from game.Input import get
 from game.MainGame import MainGame
 
 pygame.init()
-
 screen = pygame.display.set_mode((w, h))
-
-fps_clock = pygame.time.Clock()
 pygame.display.set_caption("Flappy Bird")
 
-running = True
-main_game = MainGame(screen)
+fps_clock = pygame.time.Clock()
+main_game = MainGame(
+    screen, bird_type="yellowbird", pipe_type="green", background_type="day"
+)
 
-while running:
-    main_game.update()
-    pygame.display.flip()
-
+while True:
+    main_game.update(get({"ENTER": False, "UP": False, "SPACE": False}))
+    pygame.display.update()
     fps_clock.tick(30)
-pygame.quit()

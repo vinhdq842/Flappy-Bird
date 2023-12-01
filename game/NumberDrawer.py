@@ -3,9 +3,11 @@ import pygame
 
 class NumberDrawer:
     def __init__(self):
-        self.number_images = [pygame.image.load("game/images/{}.png".format(i)) for i in range(10)]
+        self.number_images = [
+            pygame.image.load(f"game/images/{i}.png") for i in range(10)
+        ]
 
-    def draw_number(self, number, x, y, screen):
+    def draw(self, number, x, y, screen):
         for i in range(len(number)):
             x += self.number_images[int(number[i - 1])].get_width() + 2 if i > 0 else 0
             screen.blit(self.number_images[int(number[i])], (x, y))
