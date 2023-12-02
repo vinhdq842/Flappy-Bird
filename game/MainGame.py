@@ -89,8 +89,8 @@ class MainGame:
         if self.game_status < 2:
             self.base.move(self.game_status)
 
-        self.check_collision()
         self.update_point()
+        self.check_collision()
 
     def paint(self):
         self.background.render()
